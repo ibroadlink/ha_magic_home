@@ -16,9 +16,6 @@ from .iot.iot_i18n import IoTI18n
 from homeassistant import config_entries
 from homeassistant.helpers.translation import async_get_translations
 
-# 配置流的状态
-STEP_USER_DATA = "user_data"
-
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -42,16 +39,15 @@ class HaMagicHomeCustomIntegrationConfigFlow(config_entries.ConfigFlow,
         self.family_id = None
 
     async def async_step_user(self, user_input=None):
-        """第一步：显示安全信息，等待用户确认。"""
+        """Step 1: Show security information and wait for user confirmation."""
         if user_input is not None:
-            agree = user_input.get("confirm")  # 使用 get 方法避免 KeyError
-            if agree is not None and isinstance(agree, bool):  # 确保 agree 是布尔类型
+            agree = user_input.get("confirm")
+            if agree is not None and isinstance(agree, bool):
                 if agree:
                     return await self.async_step_family_info()
                 else:
                     return await self._sync_show_form("not_agreed")
 
-        # 如果 user_input 为 None，显示表单并设置默认值为 False
         return await self._sync_show_form("")
 
     async def _sync_show_form(self, reason: str):
@@ -67,12 +63,9 @@ class HaMagicHomeCustomIntegrationConfigFlow(config_entries.ConfigFlow,
         )
 
     async def async_step_family_info(self, user_input=None):
-        if user_input is not None:  # 仅处理非空输入
+        if user_input is not None:
             self._cloud_server = user_input.get('cloud_server',
                                                 DEFAULT_CLOUD_SERVER)
-            self._integration_language = user_input.get(
-                'integration_language', DEFAULT_INTEGRATION_LANGUAGE)
-
             self._integration_language = user_input.get(
                 'integration_language', DEFAULT_INTEGRATION_LANGUAGE)
             self._iot_i18n = IoTI18n(lang=self._integration_language,
@@ -98,16 +91,14 @@ class HaMagicHomeCustomIntegrationConfigFlow(config_entries.ConfigFlow,
         )
 
     async def async_step_auth_code(self, user_input=None):
-        """第二步：用户输入授权码。"""
+        """Step 2: User enters authorization code."""
         errors = {}
 
         if user_input is not None:
-            # 简单校验输入
             if not user_input["auth_code"]:
                 errors["auth_code"] = "empty_auth_code"
             else:
-                # 进入下一步，校验授权码
-                self.auth_code = user_input["auth_code"]  # 保存授权码以备后续使用
+                self.auth_code = user_input["auth_code"]
                 return await self.async_step_validate_code()
 
         # 显示输入授权码的表单
@@ -120,13 +111,12 @@ class HaMagicHomeCustomIntegrationConfigFlow(config_entries.ConfigFlow,
         )
 
     async def async_step_validate_code(self, user_input=None):
-        """第三步：校验授权码有效性，并返回 token。"""
+        """Step 3: Validate authorization code and retrieve token."""
         try:
             token = await self._validate_auth_code(self.auth_code)
-            self.token = token  # 保存 token 以备后续使用
+            self.token = token
             return await self.async_step_save_token()
         except Exception as e:
-            # 校验失败，返回错误信息
             _LOGGER.error(e)
             error_message = str(e)
             return self.async_show_form(
@@ -138,10 +128,7 @@ class HaMagicHomeCustomIntegrationConfigFlow(config_entries.ConfigFlow,
             )
 
     async def async_step_save_token(self, user_input=None):
-        """第四步：保存 token 到本地。"""
-        # 保存 token 到 Home Assistant 的本地存储
-        # 根据token 查询设备列表同步到本地
-
+        """Step 4: Save token to Home Assistant configuration."""
         return self.async_create_entry(
             title=self.family_name,
             data={

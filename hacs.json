@@ -1,5 +1,6 @@
 {
-    "name": "Ha Magic Home",
-    "content_in_root": false,
-    "homeassistant": "2024.4.4"
+  "name": "BroadLink Magic Home",
+  "content_in_root": false,
+  "homeassistant": "2024.4.4",
+  "hacs": "1.0.0"
 }

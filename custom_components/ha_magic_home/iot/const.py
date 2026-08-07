@@ -10,17 +10,17 @@ DEFAULT_NICK_NAME: str = 'ibroadlink'
 DEFAULT_CLOUD_SERVER: str = 'cn'
 
 CLOUD_SERVERS: dict = {
-    'cn': '中国集群',
-    'us': '美国集群',
-    'eu': '欧洲集群',
+    'cn': 'China',
+    'us': 'United States',
+    'eu': 'Europe',
 }
 
 SUPPORT_CENTRAL_GATEWAY_CTRL: list = ['cn']
 
-DEFAULT_INTEGRATION_LANGUAGE: str = 'cn'
+DEFAULT_INTEGRATION_LANGUAGE: str = 'en'
 INTEGRATION_LANGUAGES = {
     'en': 'English',
-    'zh-Hans': '简体中文',
+    'zh-Hans': 'Simplified Chinese',
 }
 
 CLOUD_SERVERS_DOMAIN: dict = {
@@ -40,7 +40,7 @@ HA_REDIRECT_URL: str = 'http://homeassistant.local:8123'
 
 SUPPORTED_PLATFORMS: list = ['light', 'climate', 'cover']
 
-#action
+# Action capability mapping
 CAPABILITY_MAP: dict[str, str] = {
     'on': 'ChangePowerState',
     'off': 'ChangePowerState',
