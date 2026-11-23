@@ -1,6 +1,11 @@
 ```markdown
 # CHANGELOG
 
+## v1.2.1
+### Fixed
+- Fixed the integration failing to set up on newer Home Assistant releases because `UnitOfTemperature` could no longer be imported from the climate component.
+- Removed the duplicate `version` key from `manifest.json`.
+
 ## v1.2.0
 ### Added
 - HACS compatibility fixes
