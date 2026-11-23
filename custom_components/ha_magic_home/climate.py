@@ -7,13 +7,13 @@ import math
 from typing import Any
 from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import UnitOfTemperature
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.components.climate import (SWING_ON, SWING_OFF, SWING_BOTH,
                                               SWING_VERTICAL, SWING_HORIZONTAL,
                                               ATTR_TEMPERATURE, HVACMode,
                                               ClimateEntity,
-                                              ClimateEntityFeature,
-                                              UnitOfTemperature)
+                                              ClimateEntityFeature)
 from .iot.device_class import (Endpoint, Capability)
 
 from .iot.common import control_req, report_state
